@@ -117,7 +117,7 @@ void MagicSquareTester::printRowSums()
       sum += array[i][j];
       
     }
-    printf("%4u",sum);
+    printf("%6u",sum);
   }
   cout << endl;
 }
@@ -134,7 +134,7 @@ void MagicSquareTester::printColumnSums()
       sum += array[j][i];
       
     }
-    printf("%4u",sum);
+    printf("%6u",sum);
   }
   cout << endl;  
 }
@@ -149,7 +149,7 @@ void MagicSquareTester::printDiagonalSums()
     sum += array[i][i];
 
   }
-  printf("%4u",sum);
+  printf("%6u",sum);
   
   sum = 0;
   //sum the bottom-left to top-right diagonal
@@ -158,7 +158,7 @@ void MagicSquareTester::printDiagonalSums()
     sum += array[i][j];
 
   }
-  printf("%4u",sum);
+  printf("%6u",sum);
   cout << endl;
 }
 void MagicSquareTester::runTest()
@@ -189,7 +189,6 @@ int main()
   cout << "Enter Square Size (must be odd): ";
   int size;
   cin >> size;
-  cout << endl;
   MagicSquareTester test(size);
   test.runAllTests();
 }
