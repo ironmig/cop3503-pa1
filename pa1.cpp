@@ -3,12 +3,16 @@
 #include <stdexcept>
 #include <stdio.h>
 using namespace std;
+/* Constructs a magic square with size n
+ * Precondition: n is odd and between 3 and 15
+ * Throws std::invalid_argument if n is invalid
+ */
 MagicSquare::MagicSquare(int n) : size(n)
 {
   if (n % 2 != 1) throw invalid_argument("n must be odd");
-  else if (n < 3 || n > 15) throw std::invalid_argument("n must be between 3 and 15");
+  else if (n < 3 || n > 15) throw invalid_argument("n must be between 3 and 15");
 }
-/* Precondition: arr is an n by n array with all elements == 0
+/* Precondition: arr is an n by n 2-d array with all elements == 0
  * Fills the array with the correct magic square numbers
  * Uses the Siamese Method as described on
  * https://en.wikipedia.org/wiki/Magic_square
@@ -26,12 +30,10 @@ void MagicSquare::fillSquare(int** arr)
   int num = 2;
   for (int i = 0; i < (size*size) - 1; i ++)
   {
-    //~ std::cout << "BEGIN " << row << " " << col  << " " << i << endl;
     row -= 1;
     col += 1;
     if (row < 0) row = size -1;
     if (col >= size) col = 0;
-    //~ std::cout << "MID " << row << " " << col  << " " << i << endl;
     if (arr[row][col] != 0) 
     {
       row = lastRow + 1;
@@ -39,26 +41,23 @@ void MagicSquare::fillSquare(int** arr)
     }
     if (row >= size) row = 0;
     if (col < 0 ) col = size-1;
-    //~ std::cout << "END " << row << " " << col  << " " << i << endl;
     arr[row][col] = num;
-    //~ for (int i = 0; i < size; i++)
-    //~ {
-      //~ for (int j = 0; j < size; j++)
-      //~ {
-        //~ cout << arr[i][j] << ",";
-      //~ }
-      //~ cout << endl;
-    //~ }  
     num++;
     lastRow = row;
     lastCol = col;
   }
 }
+/* Returns the size of the magic square,
+ * Useful to generate an array of correct size to pass to fillSquare
+ */ 
 const int MagicSquare::getSize()
 {
   return size;
 }
 
+/* Generates a MagicSquareTester with n = size
+ * precondition: size is a valid size for a magic square
+ */
 MagicSquareTester::MagicSquareTester(int size) :
   ms(size),
   n(size)
@@ -76,12 +75,13 @@ MagicSquareTester::MagicSquareTester(int size) :
 }
 MagicSquareTester::~MagicSquareTester()
 {
-  delete array;
+  delete array; //Ensures array is cleared from memory on object destruction
 }
 void MagicSquareTester::fillArray()
 {
   ms.fillSquare(array);
 }
+// Rotates generated magic square array to create additional magic squares
 void MagicSquareTester::rotateArray()
 {
   for(int r = 0; r < n; r++)
@@ -91,7 +91,6 @@ void MagicSquareTester::rotateArray()
   for(int r = 0; r < n; r++)
       for(int c =0; c < n/2; c++)
         swap(array[r][c], array[r][n-c-1]);
-
 }
 void MagicSquareTester::printArray()
 {
@@ -161,6 +160,7 @@ void MagicSquareTester::printDiagonalSums()
   printf("%6u",sum);
   cout << endl;
 }
+//Prints all debug info for an already filled array
 void MagicSquareTester::runTest()
 {
   printArray();
@@ -168,6 +168,7 @@ void MagicSquareTester::runTest()
   printColumnSums();
   printDiagonalSums();
 }
+// Prints out 3 valid magic squares and their sums
 void MagicSquareTester::runAllTests()
 {
   fillArray();
@@ -184,6 +185,8 @@ void MagicSquareTester::runAllTests()
   cout << "Magic Square #2: " << endl;
   runTest();
 }
+
+// Gets size of magic square from cin then runs tests
 int main()
 {
   cout << "Enter Square Size (must be odd): ";
